@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Document</title>
+</head>
+<body>
+          <div class="box" onmousemove="mouseMove(event)" ></div>
+          <script>
+                    let x,y
+                    let stateX
+                    let stateY
+                    let isDrag = false
+                    let box = document.querySelector('.box')
+                    function domMove(){
+                              requestAnimationFrame(domMove)
+                              let allX = localStorage.getItem('allX')
+                              let allY = localStorage.getItem('allY')
+                              box.style.transform = `translate(${allX-window.screenX}px,${allY-window.screenY}px)`
+                              
+                    }
+                    function mouseMove(e){
+                                        x = e.clientX
+                                        y = e.clientY
+                                         stateX = x-100
+                                         stateY = y-100
+                                        localStorage.setItem('allX',stateX+window.screenX)
+                                        localStorage.setItem('allY',stateY+window.screenY)
+                    }
+                    domMove()
+                    
+          </script>
+</body>
+</html>
+<style>
+          body{
+                    overflow: hidden;
+          }
+          .box{
+                    width: 200px;
+                    height: 200px;
+                    background-color: red;
+          }
+</style>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/test.less" type="text/less" />
+    <script src="/js/less.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <svg height="0" width="0" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <clipPath id="cross">
+          <rect y="10.5" x="25" width="25" height="10" />
+          <rect x="0" y="10.5" width="23" height="10" />
+          <rect x="25" y="0" width="25" height="9.5" />
+          <rect x="0" y="0" width="23" height="9.5" />
+        </clipPath>
+      </defs>
+    </svg>
+    
+    <img src="./huaji.png" alt="" class="BG" />
+    <div class="winMain">
+      <div class="winTop"></div>
+      <div class="winBody"></div>
+      <div class="winTabBar">
+        <div class="sysIcon">
+          <div class="winStart btn">
+            <div class="startIcon icon"></div>
+          </div>
+          <div class="searchStart btn">
+            <svg class="svgIcon" height="40" width="50" xmlns="http://www.w3.org/2000/svg">
+              <!-- 定义 clipPath，其中仅包含一个较大的圆形 -->
+              <clipPath id="search">
+                <!-- <circle cx="30" cy="30" r="8" fill="none" stroke-opacity="0" stroke="blue" stroke-width="1"/> -->
+                <circle cx="28" cy="18" r="10" fill="none" stroke-opacity="1" stroke="blue" stroke-width="1"/>
+                
+              </clipPath>
+              <circle class="ring" cx="28" cy="18" r="10" fill="none" stroke-opacity="1" stroke="white" stroke-width="5" clip-path="url(#search)"></circle>
+              <polygon class="polygon" points="21 25,22 26,15 33,14 32,21 24" fill="white" stroke="white"/>
+            </svg>
+          </div>
+        </div>
+        <div class="winTab"></div>
+        <div class="sysTime"></div>
+      </div>
+    </div>
+  </body>
+</html>
+<style lang="less">
+  :root {
+    --tabBarHeight: 40px;
+    --appTabWidth:50px;
+    --sysColor:#00ceff;
+    --btnhoverColor:rgb(164 236 255 / 18%);
+  }
+  html {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+  body {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    .BG {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+    }
+    .winMain {
+      width: 100vw;
+      height: 100vh;
+      background-color: red;
+      .winTabBar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: var(--tabBarHeight);
+        display: flex;
+        .sysIcon {
+          display: flex;
+          .btn{
+            width: var(--appTabWidth);
+            height: var(--tabBarHeight);
+            overflow: hidden;
+            &:hover{
+              background-color:var(--btnhoverColor);
+              .icon{
+                background-color: var(--sysColor);
+              }
+              /* .ring{
+                stroke:var(--sysColor);
+              }
+              .polygon{
+                fill:var(--sysColor);
+                stroke:var(--sysColor);
+              } */
+            }
+          }
+          /* win按钮 */
+          .winStart {
+            .startIcon{
+              width: 100%;
+              height: 20px;
+              background-color: #fff;
+              margin: 10px -1px;
+              transform: perspective(167px) rotateX(-1deg) rotateY(-63deg) rotateZ(-1deg) scale(0.8);
+              clip-path: url(#cross);
+            }
+          }
+          /* 搜索按钮 */
+          .searchStart{
+            .searchIcon{
+              width: 100%;
+              height: 100%;
+              background-color: #fff;
+              clip-path: url(#search);
+            }
+          }
+        }
+      }
+    }
+  }
+</style>

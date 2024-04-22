@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Document</title>
+          
+</head>
+<body>
+          <div class="box">
+                    <div class="margin"></div>
+                    <div class="cube"></div>
+                    <div class="margin"></div>
+                    <div class="cube"></div>
+                    <div class="margin"></div>
+                    <div class="cube"></div>
+                    <div class="margin"></div>
+                    <div class="cube"></div>
+                    <div class="margin"></div>
+                    <div class="cube"></div>
+                    <div class="margin"></div>
+                    <div class="cube"></div>
+                    <div class="margin"></div>
+                    <div class="cube"></div>
+                    <div class="margin"></div>
+                    <div class="cube"></div>
+                    <div class="margin"></div>
+                    <div class="cube"></div>
+                    <div class="margin"></div>
+                    <div class="cube"></div>
+                    <div class="margin"></div>
+                    <div class="cube"></div>
+                    <div class="margin"></div>
+                    <div class="cube"></div>
+                    <div class="margin"></div>
+                    <div class="cube"></div>
+                    <div class="margin"></div>
+                    <div class="cube"></div>
+                    <div class="margin"></div>
+                    <div class="cube"></div>
+                    <div class="margin"></div>
+          </div>
+</body>
+</html>
+
+<style>
+          .box{
+                    box-sizing: border-box;
+                    transition: 0.2s;
+                    width: fit-content;
+                    height: 80px;
+                    margin: 800px auto;
+                    background-color: rgb(93 92 92 / 30%);
+                    padding: 15px 15px 0;
+                    display: flex;
+                    align-items: end;
+                    border-radius: 4px;
+          }
+          .cube{
+                    --v:1;
+                    /* transform: scale(calc(var(--v))); */
+                    margin-bottom: calc(15px + 40px * (var(--v) - 1) );
+                    width: calc(50px + 70px * (var(--v) - 1));
+                    height: calc(50px + 70px * (var(--v) - 1));
+                    background-color: rgb(217, 255, 0);
+                    border-radius: 4px;
+                    border: 1px solid #fff;
+                    /* transition-duration: 0.1s;
+    transition-timing-function: cubic-bezier(0, 0, 0.48, 1.81); */
+          }
+          .margin{
+                    --v:1;
+                    width: calc(15px + 30px * (var(--v) - 1));
+                    height: 50px;
+                    margin-bottom: calc(15px + 40px * (var(--v) - 1));
+          }
+</style>
+
+<script>
+          // 曲线函数
+          function twoBezier(x, x1= 468, cy = 0.6, x2 = 1428) {
+                    let t = (x-x1)/(x2-x1)
+                    let y =   2 * t * (1 - t) * cy +1 ;
+                    return y;
+          }
+          let cubes =[]
+          let margins =[]
+          let x1,x2
+          let x
+          // dom操作
+          setTimeout(() => {
+                    
+                     cubes = document.querySelectorAll('.cube')
+                     margins = document.querySelectorAll('.margin')
+                              document.querySelector('.box').addEventListener('mouseenter',(e)=>{
+                                        cubes.forEach(dom=>{
+                                                  dom.setAttribute('style','transition:0.4s;');
+                                        })    
+                                        margins.forEach(dom=>{
+                                                  dom.setAttribute('style','transition:0.4s;');
+                                        })    
+                              })
+                              document.querySelector('.box').addEventListener('mouseleave',()=>{
+                                        cubes.forEach(dom=>{
+                                                  dom.setAttribute('style','--v:1;transition:0.4s;');
+                                        }) 
+                                        margins.forEach(dom=>{
+                                                  dom.setAttribute('style','--v:1;transition:0.4s;');
+                                        })
+                              })
+                              document.querySelector('.box').addEventListener('mousemove',(e)=>{
+                                        x1 = e.clientX - 155
+                                        x2 = e.clientX +155
+                                        let cubes = document.querySelectorAll('.cube')
+                                        cubes.forEach(dom=>{
+                                                  let cubeX = dom.getBoundingClientRect().left+25
+                                                  let v = twoBezier(cubeX,x1,0.6,x2)<1?1:twoBezier(cubeX,x1,0.6,x2);
+                                                  dom.setAttribute('style','--v:'+v);
+                                        })
+                                        margins.forEach(dom=>{
+                                                  let cubeX = dom.getBoundingClientRect().left+25
+                                                  let v = twoBezier(cubeX,x1,0.6,x2)<1?1:twoBezier(cubeX,x1,0.6,x2);
+                                                  dom.setAttribute('style','--v:'+v);
+                                        }) 
+                              })
+          }, 200);
+          
+          
+</script>
