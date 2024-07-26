@@ -1,0 +1,335 @@
+<!-- 新手引导 给引导元素添加 id="slipVideoStep0"  组件v-model绑定开始布尔元素-->
+<template>
+          <div>
+                    <template v-if="value">
+                              <div class="mask" id="mask"></div>
+                              <div class="tipBox" id="tipBox">
+                                        <div class="top" v-if="introMessage[stepNow].img">
+                                                  <div class="close">
+                                                            <div></div>
+                                                            <div style="cursor: pointer" @click="cancelIntro">
+                                                                      <i class="el-icon-close"></i>
+                                                            </div>
+                                                  </div>
+                                                  <div class="image">
+                                                            <img :src="introMessage[stepNow].img" alt="" />
+                                                  </div>
+                                        </div>
+                                        <div class="bottom">
+                                                  <div class="title">
+                                                            <span>{{ introMessage[stepNow].title }}</span>
+                                                            <div v-if="!introMessage[stepNow].img"
+                                                                      style="cursor: pointer" @click="cancelIntro">
+                                                                      <i class="el-icon-close"></i>
+                                                            </div>
+                                                  </div>
+                                                  <div class="sp">{{ introMessage[stepNow].text }}</div>
+                                                  <div class="buttonGrp">
+                                                            <div></div>
+                                                            <div>
+                                                                      <el-button class="btn step1" @click="cancelIntro"
+                                                                                v-if="stepNow == 0">我已经知道了，跳过引导</el-button>
+                                                                      <el-button class="btn step1" @click="preStep"
+                                                                                v-else>上一步</el-button>
+                                                                      <el-button class="btn step2" type="primary"
+                                                                                @click="nextStep"
+                                                                                v-if="stepNow < 7">下一步</el-button>
+                                                                      <el-button class="btn step2" type="primary"
+                                                                                @click="cancelIntro"
+                                                                                v-if="stepNow == 7">完成</el-button>
+                                                            </div>
+                                                  </div>
+                                        </div>
+                              </div>
+                    </template>
+          </div>
+</template>
+
+<script>
+export default {
+          props: {
+                    value: {
+                              type: Boolean,
+                              default: false
+                    }
+          },
+          data() {
+                    return {
+                              // isIntro: false,
+                              stepNow: 0,
+                              introMessage: [
+                                        {
+                                                  title: "新手引导~",
+                                                  img: "",
+                                                  text: "首先给自己的任务起一个便于识别的文案，能让自己在后续使用时快速定位到该视频任务。",
+                                        },
+                                        {
+                                                  title: "拆分镜头组",
+                                                  img: "https://images.wdduoduo.com/cmp/adb4b661-7626-456c-956a-3f54af0badd6.png",
+                                                  text: "在这里您可以输入一整段文案，系统将根据您输入的文案自动拆分成多个镜头组。",
+                                        },
+                                        {
+                                                  title: "添加镜头组",
+                                                  img: "https://images.wdduoduo.com/cmp/a4d29bad-73ce-4763-8b32-b147dffcd1f0.png",
+                                                  text: "除了输入文案来拆分镜头组，您也可以通过手动添加镜头组来拆分场景。",
+                                        },
+                                        {
+                                                  title: "添加素材",
+                                                  img: "https://images.wdduoduo.com/cmp/87030d6b-459f-4e4c-8cbd-bc2d2e253508.png",
+                                                  text: "添加镜头组后，您就可以在对应的镜头组里添加素材，这里的素材来自于素材库。",
+                                        },
+                                        {
+                                                  title: "分镜组字幕",
+                                                  img: "https://images.wdduoduo.com/cmp/8c646dcf-02e9-4777-9d12-963445dbb79e.png",
+                                                  text: "分镜组添加字幕，开关控制是否展示字幕。字幕有自动朗读功能但是需要开启配音。",
+                                        },
+                                        {
+                                                  title: "字幕配音",
+                                                  img: "https://images.wdduoduo.com/cmp/d1b24751-1d65-45ef-aa65-8e534653540e.png",
+                                                  text: "添加完字幕，通过开关可以控制字幕是否有配音，音色有多种可选择。",
+                                        },
+                                        {
+                                                  title: "背景音乐",
+                                                  img: "https://images.wdduoduo.com/cmp/e1a701bc-b0f8-4763-9031-8cbf215750f6.png",
+                                                  text: "这里可以添加在线抖音热门音乐，也可以上传音频文件，让视频更加丰富。",
+                                        },
+                                        {
+                                                  title: "创作数量",
+                                                  img: "",
+                                                  text: "最后也不要忘记填写首次创作数量、最大创作数量和追加创作数量。",
+                                        },
+                              ],
+
+                    }
+          },
+          methods: {
+                    cancelIntro() {
+                              this.$emit('input', false)
+                              // this.isIntro = false;
+                              this.stepNow = 0;
+                    },
+                    toIntro() {
+                              localStorage.setItem("splitIsfirstUse", "1");
+                              this.$emit('input', true)
+                              // this.isIntro = true;
+                              //下方
+                              setTimeout(() => {
+                                        const mask = document.querySelector("#mask");
+                                        const tipBox = document.querySelector("#tipBox");
+                                        const step0 = document.querySelector("#slipVideoStep0");
+                                        // 操作新手提示框 下中
+                                        tipBox.style.transform = `translate(${step0.getBoundingClientRect().left +
+                                                  (step0.getBoundingClientRect().width -
+                                                            tipBox.getBoundingClientRect().width) /
+                                                  2
+                                                  }px,${step0.getBoundingClientRect().top +
+                                                  step0.getBoundingClientRect().height +
+                                                  20
+                                                  }px)`;
+
+                                        // 操作高亮区域
+                                        mask.style.borderLeft = `${step0.getBoundingClientRect().left - 10
+                                                  }px solid rgba(0,0,0,0.45)`;
+                                        mask.style.borderTop = `${step0.getBoundingClientRect().top - 10
+                                                  }px solid rgba(0,0,0,0.45)`;
+                                        // 右边框= 总宽-左边框-dom宽度
+                                        mask.style.borderRight = `calc(100vw - ${step0.getBoundingClientRect().width
+                                                  }px - ${step0.getBoundingClientRect().left
+                                                  }px - 10px) solid rgba(0,0,0,0.45)`;
+                                        //下边框 = 总高-上边框-dom高度
+                                        mask.style.borderBottom = `calc(100vh - ${step0.getBoundingClientRect().height
+                                                  }px - ${step0.getBoundingClientRect().top
+                                                  }px - 10px) solid rgba(0,0,0,0.45)`;
+                              }, 200);
+                    },
+                    transformDom() {
+                              setTimeout(() => {
+                                        const mask = document.querySelector("#mask");
+                                        const tipBox = document.querySelector("#tipBox");
+                                        const stepDom = document.querySelector(`#slipVideoStep${this.stepNow}`);
+                                        if ([0].indexOf(this.stepNow) > -1) {
+                                                  // 操作新手提示框 下中
+                                                  tipBox.style.transform = `translate(${stepDom.getBoundingClientRect().left +
+                                                            (stepDom.getBoundingClientRect().width -
+                                                                      tipBox.getBoundingClientRect().width) /
+                                                            2
+                                                            }px,${stepDom.getBoundingClientRect().top +
+                                                            stepDom.getBoundingClientRect().height +
+                                                            20
+                                                            }px)`;
+                                        }
+                                        if ([1].indexOf(this.stepNow) > -1) {
+                                                  //操作新手提示框 下右width
+                                                  tipBox.style.transform = `translate(${stepDom.getBoundingClientRect().left -
+                                                            (tipBox.getBoundingClientRect().width -
+                                                                      stepDom.getBoundingClientRect().width)
+                                                            }px,${stepDom.getBoundingClientRect().top +
+                                                            stepDom.getBoundingClientRect().height +
+                                                            20
+                                                            }px)`;
+                                        }
+                                        if ([2].indexOf(this.stepNow) > -1) {
+                                                  // 操作新手提示框 上中
+                                                  tipBox.style.transform = `translate(${stepDom.getBoundingClientRect().left +
+                                                            (stepDom.getBoundingClientRect().width -
+                                                                      tipBox.getBoundingClientRect().width) /
+                                                            2
+                                                            }px,${stepDom.getBoundingClientRect().top -
+                                                            tipBox.getBoundingClientRect().height -
+                                                            20
+                                                            }px)`;
+                                        }
+                                        if ([3, 4].indexOf(this.stepNow) > -1) {
+                                                  // 操作新手提示框 左中
+                                                  tipBox.style.transform = `translate(${stepDom.getBoundingClientRect().left +
+                                                            stepDom.getBoundingClientRect().width +
+                                                            20
+                                                            }px,${stepDom.getBoundingClientRect().top -
+                                                            (tipBox.getBoundingClientRect().height -
+                                                                      stepDom.getBoundingClientRect().height) /
+                                                            2
+                                                            }px)`;
+                                        }
+                                        if ([5, 6, 7].indexOf(this.stepNow) > -1) {
+                                                  // 操作新手提示框 右中
+                                                  tipBox.style.transform = `translate(${stepDom.getBoundingClientRect().left -
+                                                            tipBox.getBoundingClientRect().width -
+                                                            20
+                                                            }px,${stepDom.getBoundingClientRect().top -
+                                                            (tipBox.getBoundingClientRect().height -
+                                                                      stepDom.getBoundingClientRect().height) /
+                                                            2
+                                                            }px)`;
+                                        }
+
+                                        // 操作高亮区域
+                                        mask.style.borderLeft = `${stepDom.getBoundingClientRect().left - 10
+                                                  }px solid rgba(0,0,0,0.45)`;
+                                        mask.style.borderTop = `${stepDom.getBoundingClientRect().top - 10
+                                                  }px solid rgba(0,0,0,0.45)`;
+                                        // 右边框= 总宽-左边框-dom宽度
+                                        mask.style.borderRight = `calc(100vw - ${stepDom.getBoundingClientRect().width
+                                                  }px - ${stepDom.getBoundingClientRect().left
+                                                  }px - 10px) solid rgba(0,0,0,0.45)`;
+                                        //下边框 = 总高-上边框-dom高度
+                                        mask.style.borderBottom = `calc(100vh - ${stepDom.getBoundingClientRect().height
+                                                  }px - ${stepDom.getBoundingClientRect().top
+                                                  }px - 10px) solid rgba(0,0,0,0.45)`;
+                              }, 200);
+                    },
+                    nextStep() {
+                              this.stepNow++;
+                              this.transformDom();
+                    },
+                    preStep() {
+                              this.stepNow--;
+                              this.transformDom();
+                    },
+          }
+}
+</script>
+<style lang="scss" scoped>
+.mask {
+          width: 100vw;
+          height: 100vh;
+          position: fixed;
+          top: 0;
+          left: 0;
+          z-index: 99999;
+          transition: 0.3s;
+}
+
+.tipBox {
+          z-index: 100000;
+          background-color: #fff;
+          width: 357px;
+          position: absolute;
+          top: 0;
+          left: 0;
+          transition: 0.3s;
+          border-radius: 8px;
+          transform: translate(-50%, -50%);
+
+          .top {
+
+                    .close {
+                              height: 49px;
+                              font-size: 16px;
+                              padding: 13px 18px 13px;
+                              display: flex;
+                              justify-content: space-between;
+                    }
+
+                    .image {
+                              padding: 0 18px 0px;
+
+                              img {
+                                        width: 100%;
+                                        height: 100%;
+                              }
+                    }
+          }
+
+          .bottom {
+                    padding: 16px 18px 18px;
+
+                    .title {
+                              font-size: 18px;
+                              font-family: PingFangSC, PingFang SC;
+                              font-weight: 500;
+                              color: rgba(0, 0, 0, 0.85);
+                              margin-bottom: 8px;
+                              display: flex;
+                              justify-content: space-between;
+                    }
+
+                    .sp {
+                              font-size: 14px;
+                              font-family: PingFangSC, PingFang SC;
+                              font-weight: 400;
+                              color: rgba(0, 0, 0, 0.45);
+                    }
+
+                    .buttonGrp {
+                              display: flex;
+                              justify-content: space-between;
+                              padding-top: 14px;
+
+                              .btn {
+                                        height: 24px;
+                                        padding: 0 8px;
+                                        border-radius: 4px;
+                                        font-size: 14px;
+                              }
+
+                              .step1 {
+                                        color: #333;
+                                        background-color: #fff;
+                                        border: 1px solid #dcdfe6;
+
+                                        &:hover {
+                                                  color: #3361ff;
+                                                  border-color: #c6e2ff;
+                                                  background-color: #ecf5ff;
+                                        }
+
+                                        &:focus {}
+                              }
+
+                              .step2 {
+                                        color: #fff;
+                                        background-color: #3361ff;
+                                        border: 1px solid #c6e2ff;
+
+                                        &:hover {
+                                                  color: #fff;
+                                                  border-color: #66b1ff;
+                                                  background-color: #66b1ff;
+                                        }
+
+                                        &:focus {}
+                              }
+                    }
+          }
+}
+</style>
